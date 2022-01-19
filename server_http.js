@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
     res.render('index', { emails: ctx.emails });
 });
 
-
 function check_20x(status) {
     return Math.trunc(status / 100) == 2;
 }
@@ -60,7 +59,7 @@ app.post('/registration', async (req, res) => {
         if (err.status != 200) break;
 
         let repo_name = ctx.repo_basename + "-" + netids.join("-");
-        let res_repo = await fetch(`${api_url}/projects/${ctx.src_repo_id}/fork`, {
+        let res_repo = await fetch(`${ctx.api_url}/projects/${ctx.src_repo_id}/fork`, {
             method: "POST",
             headers: {
                 "PRIVATE-TOKEN": ctx.token,
@@ -80,7 +79,7 @@ app.post('/registration', async (req, res) => {
             break;
         }
 
-        let res_invite = await fetch(`${api_url}/projects/${repo_id}/invitations`, {
+        let res_invite = await fetch(`${ctx.api_url}/projects/${repo_id}/invitations`, {
             method: "POST",
             headers: {
                 "PRIVATE-TOKEN": ctx.token,
@@ -98,11 +97,12 @@ app.post('/registration', async (req, res) => {
         }
 
         for (let key of email_name) {
+            console.log(key);
             ctx.client.rPush(key, [email_name[key], repo_id]);
         }
     } while (false);
     if (err.status != 200) {
-        // res.status(err.status);
+        res.status(err.status);
         res.render('error', { info: err.info });
     } else {
         res.render('success', { emails: invite_emails });
@@ -120,7 +120,7 @@ async function create_ctx() {
         emails: new Set(fs.readFileSync("emails.txt", { encoding: 'utf8', flag: 'r' }).split("\n"))
     }
 
-    let resp = await fetch(`${api_url}/groups/${ctx.group_name}`, {
+    let resp = await fetch(`${ctx.api_url}/groups/${ctx.group_name}`, {
         headers: { "PRIVATE-TOKEN": ctx.token }
     });
     let resp_group = await resp.json();
