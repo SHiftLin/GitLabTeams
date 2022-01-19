@@ -14,13 +14,6 @@
             text-align: right
         }
     </style>
-    <script>
-        var emails = new Set([
-        <% emails.forEach(function (e) { %>
-            "<%= e %>",
-            <% }); %>
-        ]);
-    </script>
 </head>
 
 <body>
@@ -74,6 +67,8 @@
 
     <script>
         function verification() {
+            return true;
+            /*
             for (let i = 1; i <= 3; i++) {
                 let email = document.forms["reg"]["email" + i].value;
                 email = email.trim().toLowerCase();
@@ -83,6 +78,7 @@
                     return false;
                 }
             }
+            */
         }
     </script>
 
