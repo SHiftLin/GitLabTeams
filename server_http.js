@@ -31,12 +31,33 @@ function check_20x(status) {
     return Math.trunc(status / 100) == 2;
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function wait_fork_finished(repo_id) {
+    let import_status = "";
+    let cnt = 0;
+    while (import_status != "finished" && cnt < 5) {
+        let res_prot = await fetch(`${ctx.api_url}/projects/${repo_id}`, {
+            headers: {
+                "PRIVATE-TOKEN": ctx.token
+            }
+        });
+        import_status = (await res_prot.json()).import_status;
+        cnt++;
+        await sleep(1000);
+    }
+    return import_status;
+}
+
 app.post('/registration', async (req, res) => {
     let err = { status: 200, info: "" };
+    let email_name = {}
+    let invite_emails = [];
+    let netids = [];
+    let repo_id = 0;
     do {
-        let email_name = {}
-        let invite_emails = [];
-        let netids = [];
         for (let i = 1; i <= 3; i++) {
             let name = req.body['name' + i].trim(), email = req.body['email' + i].trim();
             if (name.length == 0 || email.length == 0) continue;
@@ -53,6 +74,8 @@ app.post('/registration', async (req, res) => {
             invite_emails.push(email)
             netids.push(email.split("@")[0]);
         }
+        if (err.status != 200) break;
+
         if (invite_emails.length == 0)
             err = { status: 400, info: "Please provide valid emails." };
         invite_emails = invite_emails.join(",");
@@ -73,9 +96,9 @@ app.post('/registration', async (req, res) => {
             }).toString()
         });
         let res_body = await res_repo.json();
-        let repo_id = res_body.id;
+        repo_id = res_body.id;
         if (!check_20x(res_repo.status) || !repo_id) {
-            err = { status: res_repo.status, info: "Repo creation failed for the name: " + repo_name };
+            err = { status: res_repo.status, info: "Repo fork failed for the name: " + repo_name };
             break;
         }
 
@@ -91,21 +114,26 @@ app.post('/registration', async (req, res) => {
             }).toString()
         });
         res_body = await res_invite.json();
-        if (!check_20x(res_repo.status) || !res_body.status != "success") {
-            err = { status: 400, info: JSON.stringify(res_body.message) };
-            break;
-        }
+        if (!res_body.status != "success")
+            err.info = res_body.message;
 
-        for (let key of email_name) {
-            console.log(key);
-            ctx.client.rPush(key, [email_name[key], repo_id]);
+        for (let key in email_name) {
+            ctx.client.rPush(key, [email_name[key], String(repo_id)]);
         }
     } while (false);
     if (err.status != 200) {
         res.status(err.status);
         res.render('error', { info: err.info });
     } else {
-        res.render('success', { emails: invite_emails });
+        res.render('success', { emails: invite_emails, info: JSON.stringify(err.info) });
+
+        await wait_fork_finished(repo_id);
+        let res_prot = await fetch(`${ctx.api_url}/projects/${repo_id}/protected_branches/main`, {
+            method: "DELETE",
+            headers: {
+                "PRIVATE-TOKEN": ctx.token
+            }
+        });
     }
 });
 
