@@ -9,7 +9,6 @@ import logger from "logops";
 import fetch from "node-fetch";
 import { createClient } from 'redis';
 import process from 'process';
-import e from "express";
 
 var app = express();
 var ctx;
@@ -67,7 +66,7 @@ app.post('/registration', async (req, res) => {
             }
             let value = await ctx.client.lRange(email, 0, 1);
             if (value.length > 0) {
-                err = { status: 400, info: email + "is already in a group." };
+                err = { status: 400, info: email + "is already in a team." };
                 break;
             }
             email_name[email] = name;
@@ -144,7 +143,7 @@ async function create_ctx() {
         token: fs.readFileSync("token", { encoding: 'utf8', flag: 'r' }),
         group_name: "TEST",
         src_repo_path: "dslabs",
-        repo_basename: "cps512-spring22",
+        repo_basename: "dslabs",
         emails: new Set(fs.readFileSync("emails.txt", { encoding: 'utf8', flag: 'r' }).split("\n"))
     }
 
