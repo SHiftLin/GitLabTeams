@@ -1,5 +1,6 @@
 *.rdb
 token
+cert
 emails.txt
 
 # Logs

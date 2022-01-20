@@ -1,6 +1,5 @@
 "use strict";
 import express from "express";
-import http from "http";
 import https from "https";
 import fs from "fs";
 import bodyParser from "body-parser";
@@ -9,6 +8,11 @@ import logger from "logops";
 import fetch from "node-fetch";
 import { createClient } from 'redis';
 import process from 'process';
+
+const Certificate = {
+    key: fs.readFileSync('./cert/lab.dukesec.net.key'),
+    cert: fs.readFileSync('./cert/lab.dukesec.net.pem')
+}
 
 var app = express();
 var ctx;
@@ -170,8 +174,14 @@ async function create_ctx() {
         process.exit(1);
     }
 
-    var httpServer = http.createServer(app).listen(80, () => {
-        console.log("Server started! Listening on %s", httpServer.address().port);
+    var http = express();
+    http.get('*', function (req, res) {
+        res.redirect('https://' + req.headers.host + req.url);
+    })
+    http.listen(80);
+
+    var httpsServer = https.createServer(Certificate, app).listen(443, () => {
+        console.log("Server started! Listening on %s", httpsServer.address().port);
     });
 })();
 
