@@ -145,7 +145,7 @@ async function create_ctx() {
     let ctx = {
         api_url: "https://coursework.cs.duke.edu/api/v4/",
         token: fs.readFileSync("token", { encoding: 'utf8', flag: 'r' }),
-        group_name: "TEST",
+        group_name: "cps512-spring22",
         src_repo_path: "dslabs",
         repo_basename: "dslabs",
         emails: new Set(fs.readFileSync("emails.txt", { encoding: 'utf8', flag: 'r' }).split("\n"))
