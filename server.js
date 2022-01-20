@@ -131,7 +131,7 @@ app.post('/registration', async (req, res) => {
         res.render('success', { emails: invite_emails, info: JSON.stringify(err.info) });
 
         await wait_fork_finished(repo_id);
-        let res_prot = await fetch(`${ctx.api_url}/projects/${repo_id}/protected_branches/main`, {
+        let res_prot = await fetch(`${ctx.api_url}/projects/${repo_id}/protected_branches/master`, {
             method: "DELETE",
             headers: {
                 "PRIVATE-TOKEN": ctx.token
