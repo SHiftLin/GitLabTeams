@@ -10,8 +10,8 @@ import { createClient } from 'redis';
 import process from 'process';
 
 const Certificate = {
-    key: fs.readFileSync('./cert/lab.dukesec.net.key'),
-    cert: fs.readFileSync('./cert/lab.dukesec.net.pem')
+    key: fs.readFileSync('./cert/server.key'),
+    cert: fs.readFileSync('./cert/server.pem')
 }
 
 var app = express();
