@@ -23,11 +23,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.set('view engine', 'ejs');
 app.set('views', 'static');
-app.use(express.static('static', { maxAge: 60 * 1000 }));
-
+app.use(express.static('static', { maxAge: 600 * 1000 }));
 
 app.get('/', (req, res) => {
-    res.render('index', { emails: ctx.emails });
+    res.render('index', { emails: ctx.emails, platform: ctx.platform });
 });
 
 function check_20x(status) {
@@ -128,7 +127,11 @@ app.post('/registration', async (req, res) => {
         res.status(err.status);
         res.render('error', { info: err.info });
     } else {
-        res.render('success', { emails: invite_emails, info: JSON.stringify(err.info) });
+        res.render('success', {
+            emails: invite_emails,
+            info: JSON.stringify(err.info),
+            platform: ctx.platform
+        });
 
         await wait_fork_finished(repo_id);
         let res_prot = await fetch(`${ctx.api_url}/projects/${repo_id}/protected_branches/master`, {
@@ -143,6 +146,7 @@ app.post('/registration', async (req, res) => {
 
 async function create_ctx() {
     let ctx = {
+        platform: '<a href="https://coursework.cs.duke.edu">Coursework</a>',
         api_url: "https://coursework.cs.duke.edu/api/v4/",
         token: fs.readFileSync("token", { encoding: 'utf8', flag: 'r' }),
         group_name: "cps512-spring22",

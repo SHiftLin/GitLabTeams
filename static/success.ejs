@@ -9,14 +9,20 @@
 </head>
 <div class="col-sm-4 offset-sm-1">
     <h3>Success</h3>
-</div>
-<div class="col-sm-4 offset-sm-1">
     <p>
-        Team creation finished. Invitation has been sent to <%= emails %>.
+        Team creation finished. Invitations have been sent to <%= emails %>.
     </p>
     <p>
         <%= info %>
     </p>
+    <br>
+    <p><b>You may need some settings on <%- platform %> (see <a href="access.html">this</a>) before you can access to the repo.</b></p>
+    <h3>Grading</h3>
+    <p>
+        After deadline of each lab, we will download your code from the repo on <%- platform %>, and use your latest
+        commit before the deadline for grading.
+    </p>
+    <p><b>Therefore, remember to push your changes to the repo on <%- platform %> before the deadline!</b></p>
 </div>
 
 </html>

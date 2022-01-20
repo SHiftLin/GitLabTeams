@@ -17,53 +17,78 @@
 </head>
 
 <body>
-    <div class="col-sm-8 offset-sm-2">
-        <h3>CPS512: Lab Team Registration</h3>
-    </div>
-    <form action="/registration" method="post" id="reg" class="col-sm-8 offset-sm-2" onsubmit="return verification()">
-        <div class="mt-3">
-            <label>Member 1 (Required)</label>
-            <div class="row">
-                <label for="name1" class="col-sm-2 col-form-label">Full Name</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="name1" name="name1" placeholder="First Last" required>
-                </div>
-                <label for="email1" class="col-sm-2 col-form-label">Duke Email</label>
-                <div class="col-sm-4">
-                    <input type="email" class="form-control" id="email1" name="email1" placeholder="netid@duke.edu"
-                        required>
-                </div>
-            </div>
-        </div>
-        <div class="mt-3">
-            <label>Member 2 (Optional)</label>
-            <div class="row">
-                <label for="name2" class="col-sm-2 col-form-label">Full Name</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="name2" name="name2" placeholder="First Last">
-                </div>
-                <label for="email2" class="col-sm-2 col-form-label">Duke Email</label>
-                <div class="col-sm-4">
-                    <input type="email" class="form-control" id="email2" name="email2" placeholder="netid@duke.edu">
-                </div>
-            </div>
-        </div>
-        <div class="mt-3">
-            <label>Member 2 (Optional)</label>
-            <div class="row">
-                <label for="name3" class="col-sm-2 col-form-label">Full Name</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control" id="name3" name="name3" placeholder="First Last">
-                </div>
-                <label for="email3" class="col-sm-2 col-form-label">Duke Email</label>
-                <div class="col-sm-4">
-                    <input type="email" class="form-control" id="email3" name="email3" placeholder="netid@duke.edu">
-                </div>
-            </div>
-        </div>
+    <h2 class="mt-3 col-sm-8 offset-sm-2">CPS512: Lab Team Registration</h2>
 
-        <button type="submit" class="btn btn-primary mt-3">Register</button>
-    </form>
+    <div class="mt-3 col-sm-8 offset-sm-2">
+        <h3>Note</h3>
+        <p>
+            This is a system similar to AG350 for team management in the course. All your code will be stored on
+            <%- platform %>, which is a git platform. We already created a namespace "CPS512-Spring22" on <%- platform %>. 
+            After you registered your team here, this system will create a repo for the teammates in the namespace. 
+            Each teammate will receive an invitation email to join the repo.
+            Then you should go to <%- platform %> and git clone the repo to your local or virtual machine for development.
+        </p>
+        <p><b>You may need some settings on <%- platform %> (see <a href="access.html">this</a>) before you can access to the repo.</b></p>
+        <h3>Grading</h3>
+        <p>
+            After deadline of each lab, we will download your code from the repo on <%- platform %>, and use your latest
+            commit before the deadline for grading.
+        </p>
+        <p><b>Therefore, remember to push your changes to the repo on <%- platform %> before the deadline!</b></p>
+        <br>
+    </div>
+    
+    <div class="mt-3 col-sm-8 offset-sm-2">
+        <h3>Registration</h3>
+        <p>Please use netid@duke.edu for registration. </p>
+        <form action="/registration" method="post" id="reg" onsubmit="return verification()">
+            <div class="mt-3">
+                <label>Member 1 (Required)</label>
+                <div class="row">
+                    <label for="name1" class="col-sm-2 col-form-label">Full Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="name1" name="name1" placeholder="First Last"
+                            required>
+                    </div>
+                    <label for="email1" class="col-sm-2 col-form-label">Duke Email</label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" id="email1" name="email1"
+                            placeholder="netid@duke.edu" required>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label>Member 2 (Optional)</label>
+                <div class="row">
+                    <label for="name2" class="col-sm-2 col-form-label">Full Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="name2" name="name2" placeholder="First Last">
+                    </div>
+                    <label for="email2" class="col-sm-2 col-form-label">Duke Email</label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" id="email2" name="email2"
+                            placeholder="netid@duke.edu">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <label>Member 2 (Optional)</label>
+                <div class="row">
+                    <label for="name3" class="col-sm-2 col-form-label">Full Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="name3" name="name3" placeholder="First Last">
+                    </div>
+                    <label for="email3" class="col-sm-2 col-form-label">Duke Email</label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" id="email3" name="email3"
+                            placeholder="netid@duke.edu">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Register</button>
+        </form>
+    </div>
 
     <script>
         function verification() {
