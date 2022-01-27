@@ -1,7 +1,9 @@
 *.rdb
+*.txt
+*.csv
 token
 cert
-emails.txt
+
 
 # Logs
 logs
