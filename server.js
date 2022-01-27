@@ -69,7 +69,7 @@ app.post('/registration', async (req, res) => {
             }
             let value = await ctx.client.lRange(email, 0, 1);
             if (value.length > 0) {
-                err = { status: 400, info: email + "is already in a team." };
+                err = { status: 400, info: email + " is already in a team." };
                 break;
             }
             email_name[email] = name;
